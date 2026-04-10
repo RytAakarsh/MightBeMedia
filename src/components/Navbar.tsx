@@ -27,7 +27,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto flex items-center justify-between px-6">
         <a href="#" className="flex items-center gap-2">
-          <img src={logo} alt="MightBeMedia" className="h-8" />
+          <img src={logo} alt="MightBeMedia" className="h-14" />
         </a>
 
         <div className="hidden md:flex items-center gap-8">
