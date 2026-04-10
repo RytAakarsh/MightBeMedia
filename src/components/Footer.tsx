@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 items-center">
           {/* Logo + tagline */}
           <div className="flex flex-col items-center md:items-start gap-3">
-            <img src={logo} alt="MightBeMedia" className="h-7 sm:h-8" />
+            <img src={logo} alt="MightBeMedia" className="h-14 " />
             <p className="text-xs sm:text-sm text-muted-foreground text-center md:text-left">Turning Ideas Into Revenue Systems</p>
           </div>
 
