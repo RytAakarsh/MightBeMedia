@@ -41,7 +41,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-border text-center">
-          <p className="text-[10px] sm:text-xs text-muted-foreground">© {new Date().getFullYear()} MightBeMedia. All rights reserved.</p>
+          <p className="text-[10px] mb-4 sm:text-xs text-muted-foreground">© {new Date().getFullYear()} MightBeMedia. All rights reserved.</p>
         </div>
       </div>
     </footer>
