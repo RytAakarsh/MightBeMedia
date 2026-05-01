@@ -1,49 +1,90 @@
 import { useScrollAnimation } from "./useScrollAnimation";
-import { Zap, Target, TrendingUp } from "lucide-react";
+import { Zap, Target, TrendingUp, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 const pillars = [
-  { icon: Zap, title: "Traffic → Attention", desc: "We capture your audience's attention with systems designed to attract." },
-  { icon: Target, title: "Trust → Authority", desc: "We build trust through strategic design and positioning." },
-  { icon: TrendingUp, title: "Conversion → Revenue", desc: "We turn visitors into paying customers with optimized funnels." },
+  { icon: Zap, title: "Traffic → Attention", desc: "Capture audience attention through smart, magnetic systems." },
+  { icon: Target, title: "Trust → Authority", desc: "Build credibility with strategic design and positioning." },
+  { icon: TrendingUp, title: "Conversion → Revenue", desc: "Turn visitors into paying customers with optimized funnels." },
+];
+
+const bullets = [
+  "Business-first thinking on every decision",
+  "Conversion-focused design and copy",
+  "Scalable systems built for growth",
+  "Long-term partnership beyond launch",
 ];
 
 export default function AboutSection() {
   const { ref, isVisible } = useScrollAnimation();
-  const { ref: ref2, isVisible: vis2 } = useScrollAnimation();
 
   return (
-    <section id="about" className="relative py-20 sm:py-32 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div ref={ref} className={`max-w-3xl mx-auto text-center mb-16 sm:mb-24 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-          <p className="text-primary text-xs sm:text-sm font-semibold uppercase tracking-widest mb-3 sm:mb-4">Who We Are</p>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-4 sm:mb-6">
-            Growth-Focused <span className="gradient-text">Digital Agency</span>
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-lg leading-relaxed">
-            MightBeMedia is a growth-focused digital agency that builds systems designed to generate leads, increase conversions, and scale businesses. Not just developers. Not just designers. <span className="text-foreground font-semibold">We build business systems.</span>
-          </p>
-        </div>
+    <section id="about" className="relative py-20 sm:py-28 lg:py-32 overflow-hidden">
+      <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[140px]" />
 
-        <div ref={ref2} className={`max-w-4xl mx-auto transition-all duration-700 delay-200 ${vis2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-          <div className="glass-card p-6 sm:p-10 md:p-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
-            <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl md:text-4xl font-bold font-heading mb-6 sm:mb-10 leading-tight">
-                Your Business Doesn't Need a Website.{" "}
-                <span className="gradient-text">It Needs a System That Converts.</span>
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-                {pillars.map((p, i) => (
-                  <div key={p.title} className="group">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
-                      <p.icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-                    </div>
-                    <h4 className="text-base sm:text-lg font-bold font-heading mb-1.5 sm:mb-2">{p.title}</h4>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-                  </div>
-                ))}
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div
+          ref={ref}
+          className={`grid lg:grid-cols-12 gap-10 lg:gap-16 items-start transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+        >
+          {/* Left col - heading */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28">
+            <p className="eyebrow mb-5">About MightBeMedia</p>
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[1.05] tracking-tight mb-6 text-balance">
+              We're not a service provider.{" "}
+              <span className="text-gradient-lime">We're your growth partner.</span>
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-8">
+              MightBeMedia is a growth-focused digital agency that builds
+              systems designed to generate leads, increase conversions, and
+              scale businesses. Not just developers. Not just designers.{" "}
+              <span className="text-foreground font-semibold">
+                We build business systems.
+              </span>
+            </p>
+
+            <ul className="space-y-3 mb-8">
+              {bullets.map((b) => (
+                <li key={b} className="flex items-start gap-3 text-sm sm:text-base">
+                  <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-foreground/90">{b}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a href="#services" className="pill-btn-primary lime-glow">
+              Explore Services
+              <span className="pill-btn-arrow bg-primary-foreground/15">
+                <ArrowUpRight className="w-4 h-4" />
+              </span>
+            </a>
+          </div>
+
+          {/* Right col - pillars stacked */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+            {pillars.map((p, i) => (
+              <div
+                key={p.title}
+                className="group glass-card-hover p-6 sm:p-8 flex items-start gap-5 sm:gap-6 relative overflow-hidden"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
+                <div className="absolute top-0 right-0 text-[6rem] sm:text-[8rem] font-heading font-bold text-primary/5 leading-none -mt-4 -mr-4 select-none">
+                  0{i + 1}
+                </div>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                  <p.icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                </div>
+                <div className="relative z-10 flex-1">
+                  <h3 className="text-lg sm:text-xl font-heading font-bold mb-2">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                    {p.desc}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

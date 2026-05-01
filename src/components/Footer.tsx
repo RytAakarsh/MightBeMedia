@@ -1,47 +1,121 @@
 import logo from "@/assets/logo.png";
-import { Mail, ArrowUp } from "lucide-react";
+import { Mail, Phone, ArrowUp, ArrowUpRight } from "lucide-react";
+
+const footerLinks = [
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Contact", href: "#contact" },
+];
 
 export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative border-t border-border">
-      {/* Gradient line on top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+    <footer className="relative border-t border-border pt-16 sm:pt-20 pb-8">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[140px]" />
 
-      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 items-center">
-          {/* Logo + tagline */}
-          <div className="flex flex-col items-center md:items-start gap-3">
-            <img src={logo} alt="MightBeMedia" className="h-14 " />
-            <p className="text-xs sm:text-sm text-muted-foreground text-center md:text-left">Turning Ideas Into Revenue Systems</p>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        {/* Big CTA strip */}
+        <div className="mb-14 sm:mb-20 text-center">
+          <h3 className="font-heading font-bold text-3xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-balance max-w-3xl mx-auto mb-6">
+            Ready to build your{" "}
+            <span className="text-gradient-lime">revenue engine?</span>
+          </h3>
+          <a href="#contact" className="pill-btn-primary lime-glow">
+            Let's Talk
+            <span className="pill-btn-arrow bg-primary-foreground/15">
+              <ArrowUpRight className="w-4 h-4" />
+            </span>
+          </a>
+        </div>
+
+        {/* Main footer grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-12 pb-10 border-b border-border">
+          {/* Brand */}
+          <div className="md:col-span-5">
+            <img src={logo} alt="MightBeMedia" className="h-12 mb-5" />
+            <p className="text-sm sm:text-base text-muted-foreground max-w-sm mb-6 leading-relaxed">
+              We are not a service provider.{" "}
+              <span className="text-foreground font-semibold">
+                We are your revenue growth partner.
+              </span>
+            </p>
+            <div className="space-y-2">
+              <a
+                href="mailto:info@mightbemedia.in"
+                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Mail className="w-4 h-4 text-primary" />
+                info@mightbemedia.in
+              </a>
+              <a
+                href="tel:+918851872245"
+                className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Phone className="w-4 h-4 text-primary" />
+                +91 88518 72245
+              </a>
+            </div>
           </div>
 
-          {/* Positioning */}
-          <div className="flex flex-col items-center gap-1 text-center">
-            <p className="text-xs sm:text-sm font-semibold gradient-text">We are not a service provider.</p>
-            <p className="text-xs sm:text-sm font-semibold gradient-text">We are your revenue growth partner.</p>
+          {/* Sitemap */}
+          <div className="md:col-span-3">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-foreground mb-5">
+              Sitemap
+            </p>
+            <ul className="space-y-3">
+              {footerLinks.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-center md:justify-end gap-3">
-            <a
-              href="mailto:info.mightbemedia@gmail.com"
-              className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:border-primary/40 hover:bg-primary/5 transition-all"
-            >
-              <Mail className="w-4 h-4 text-muted-foreground" />
-            </a>
-            <button
-              onClick={scrollToTop}
-              className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:border-primary/40 hover:bg-primary/5 transition-all"
-            >
-              <ArrowUp className="w-4 h-4 text-muted-foreground" />
-            </button>
+          {/* Services */}
+          <div className="md:col-span-4">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-foreground mb-5">
+              Services
+            </p>
+            <ul className="space-y-3">
+              {["Website Development", "App Development", "Software Development", "Social Media Growth"].map(
+                (s) => (
+                  <li key={s}>
+                    <a
+                      href="#services"
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {s}
+                    </a>
+                  </li>
+                )
+              )}
+            </ul>
           </div>
         </div>
 
-        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-border text-center">
-          <p className="text-[10px] mb-4 sm:text-xs text-muted-foreground">© {new Date().getFullYear()} MightBeMedia. All rights reserved.</p>
+        {/* Bottom row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground text-center sm:text-left">
+            © {new Date().getFullYear()} MightBeMedia. All rights reserved.
+          </p>
+          <button
+            onClick={scrollToTop}
+            className="pill-btn-outline text-xs"
+          >
+            Back to Top
+            <span className="pill-btn-arrow bg-muted">
+              <ArrowUp className="w-4 h-4" />
+            </span>
+          </button>
         </div>
       </div>
     </footer>

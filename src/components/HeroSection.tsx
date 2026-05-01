@@ -1,101 +1,183 @@
-import { useEffect, useRef } from "react";
-import { ArrowRight, BarChart3, Globe, Layout, TrendingUp } from "lucide-react";
-
-const floatingCards = [
-  { icon: Globe, label: "Website", x: "10%", y: "20%", delay: 0 },
-  { icon: Layout, label: "Dashboard", x: "75%", y: "15%", delay: 1 },
-  { icon: BarChart3, label: "Analytics", x: "80%", y: "60%", delay: 2 },
-  { icon: TrendingUp, label: "Growth", x: "5%", y: "65%", delay: 0.5 },
-];
+import { ArrowUpRight, Users, Star, TrendingUp, Sparkles } from "lucide-react";
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const cards = containerRef.current.querySelectorAll<HTMLElement>(".floating-card");
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      const x = (clientX / innerWidth - 0.5) * 20;
-      const y = (clientY / innerHeight - 0.5) * 20;
-      cards.forEach((card, i) => {
-        const factor = (i + 1) * 0.3;
-        card.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
-    >
+    <section className="relative pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-20 overflow-hidden">
       {/* Background grid */}
-      <div className="absolute inset-0 opacity-[0.04]"
+      <div
+        className="absolute inset-0 opacity-[0.05] pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
+          backgroundSize: "60px 60px",
+          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
         }}
       />
 
-      {/* Glow orbs */}
-      <div className="absolute top-1/4 left-1/4 w-60 sm:w-96 h-60 sm:h-96 bg-primary/10 rounded-full blur-[80px] sm:blur-[120px] animate-glow-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-accent/10 rounded-full blur-[60px] sm:blur-[100px] animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* LEFT - Headline + copy */}
+          <div className="lg:col-span-7 animate-fade-in-up">
+            <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-7">
+              Built for visibility.{" "}
+              <span className="italic text-primary">Designed for conversion.</span>
+            </p>
 
-      {/* Floating cards - desktop only */}
-      {floatingCards.map((card) => (
-        <div
-          key={card.label}
-          className="floating-card hidden lg:flex absolute glass-card p-4 items-center gap-3 floating"
-          style={{ left: card.x, top: card.y, animationDelay: `${card.delay}s` }}
-        >
-          <div className="p-2 rounded-lg bg-primary/10">
-            <card.icon className="w-5 h-5 text-primary" />
+            <h1 className="font-heading font-bold text-[2.5rem] leading-[1.05] sm:text-6xl lg:text-7xl xl:text-[5.5rem] xl:leading-[1.02] tracking-tight text-balance mb-6 sm:mb-8">
+              Fueling business to{" "}
+              <span className="relative inline-block">
+                <span className="text-gradient-lime">growth</span>
+                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-primary/40 rounded-full" />
+              </span>{" "}
+              through digital marketing
+            </h1>
+
+            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mb-8 sm:mb-10 leading-relaxed">
+              We help businesses grow by creating smart, results-driven digital
+              systems that convert traffic into paying customers.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+              <a href="#contact" className="pill-btn-primary lime-glow">
+                Start Growth
+                <span className="pill-btn-arrow bg-primary-foreground/15">
+                  <ArrowUpRight className="w-4 h-4" />
+                </span>
+              </a>
+              <a href="#portfolio" className="pill-btn-outline">
+                View Our Work
+                <span className="pill-btn-arrow bg-muted">
+                  <ArrowUpRight className="w-4 h-4" />
+                </span>
+              </a>
+            </div>
+
+            {/* Stat row */}
+            <div className="grid grid-cols-3 gap-4 sm:gap-8 mt-12 sm:mt-16 max-w-lg">
+              <div>
+                <div className="text-3xl sm:text-4xl font-heading font-bold gradient-text">
+                  50+
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider mt-1">
+                  Projects Delivered
+                </p>
+              </div>
+              <div>
+                <div className="text-3xl sm:text-4xl font-heading font-bold gradient-text">
+                  10x
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider mt-1">
+                  Lead Growth
+                </p>
+              </div>
+              <div>
+                <div className="text-3xl sm:text-4xl font-heading font-bold gradient-text">
+                  3+
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider mt-1">
+                  Years Building
+                </p>
+              </div>
+            </div>
           </div>
-          <span className="text-sm font-medium text-foreground">{card.label}</span>
+
+          {/* RIGHT - Visual stack */}
+          <div className="lg:col-span-5 relative">
+            {/* Big primary card with conic blob */}
+            <div className="relative rounded-[2rem] overflow-hidden aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] border border-border/40">
+              <div className="hero-blob absolute inset-0 animate-[blob-spin_25s_linear_infinite]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+
+              {/* Floating UI badges inside the card */}
+              <div className="absolute top-6 left-6 right-6 flex justify-between">
+                <div className="glass-card px-3 py-2 flex items-center gap-2 floating">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span className="text-xs font-semibold">Live Growth</span>
+                </div>
+                <div className="glass-card w-10 h-10 rounded-full flex items-center justify-center floating-delayed">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                </div>
+              </div>
+
+              {/* Center bold tag */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center px-6">
+                  <div className="text-5xl sm:text-7xl font-heading font-bold text-foreground/95">
+                    27<span className="text-primary">%</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-foreground/80 mt-2 max-w-[180px] mx-auto">
+                    Average lift in conversions for our clients
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom badge */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="glass-card p-4 flex items-center gap-3 floating-slow">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/80 border-2 border-background flex items-center justify-center text-[10px] font-bold text-primary-foreground">
+                      M
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-accent/80 border-2 border-background flex items-center justify-center text-[10px] font-bold text-accent-foreground">
+                      B
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-primary/60 border-2 border-background flex items-center justify-center text-[10px] font-bold text-primary-foreground">
+                      M
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-bold">Quality Team</p>
+                    <p className="text-[10px] text-muted-foreground">Designers · Devs · Strategists</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Small floating stat card */}
+            <div className="hidden sm:flex absolute -left-4 -bottom-6 lg:-left-10 glass-card p-4 items-center gap-3 floating shadow-2xl">
+              <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <div className="text-lg font-heading font-bold">2.1x</div>
+                <p className="text-[10px] text-muted-foreground">ROAS Avg</p>
+              </div>
+            </div>
+
+            <div className="hidden sm:flex absolute -right-2 top-12 lg:-right-6 glass-card px-4 py-2.5 items-center gap-2 floating-delayed shadow-2xl">
+              <div className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+                ))}
+              </div>
+              <span className="text-xs font-semibold">5.0 Rated</span>
+            </div>
+          </div>
         </div>
-      ))}
 
-      {/* Hero content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 text-center max-w-4xl">
-        <div className="inline-block mb-4 sm:mb-6 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-xs sm:text-sm font-medium animate-fade-in">
-          Your Revenue Growth Partner
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold font-heading leading-[1.15] mb-4 sm:mb-6 animate-fade-in-up">
-          We Don't Build Websites.{" "}
-          <span className="gradient-text">We Build Revenue Engines.</span>
-        </h1>
-
-        <p className="text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 animate-fade-in-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
-          We help businesses convert traffic into paying customers using high-converting digital systems.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-          <a
-            href="#portfolio"
-            className="group px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl glass-card-hover text-foreground font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300"
-          >
-            View Our Work
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-          <a
-            href="#contact"
-            className="px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold text-sm sm:text-base transition-all duration-300 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.5)] neon-glow"
-          >
-            Start Your Growth
-          </a>
-        </div>
-      </div>
-
-      {/* Scroll indicator - hidden on very small screens */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-muted-foreground animate-fade-in" style={{ animationDelay: "1s" }}>
-        <span className="text-xs">Scroll to explore</span>
-        <div className="w-5 h-8 rounded-full border border-muted-foreground/30 flex justify-center pt-1.5">
-          <div className="w-1 h-2 bg-primary rounded-full animate-bounce" />
+        {/* Marquee strip */}
+        <div className="mt-16 sm:mt-24 lg:mt-28 border-y border-border py-6 sm:py-8 marquee">
+          {[0, 1].map((idx) => (
+            <div key={idx} className="marquee-track" aria-hidden={idx === 1}>
+              {[
+                "Revenue Growth",
+                "Web Development",
+                "App Development",
+                "SEO & Funnels",
+                "Social Growth",
+                "Conversion Design",
+                "Analytics",
+                "Brand Systems",
+              ].map((t) => (
+                <span
+                  key={t + idx}
+                  className="flex items-center gap-3 sm:gap-6 text-xl sm:text-3xl lg:text-4xl font-heading font-bold text-muted-foreground/40 hover:text-primary transition-colors whitespace-nowrap"
+                >
+                  {t}
+                  <span className="w-2 h-2 rounded-full bg-primary/60" />
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>
