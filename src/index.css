@@ -2,54 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --background: 222 47% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 96%;
+    --card: 222 47% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 199 89% 48%;
+    /* Lime green primary like Seonex */
+    --primary: 75 85% 63%;
     --primary-foreground: 222 47% 6%;
 
-    --secondary: 222 47% 14%;
-    --secondary-foreground: 210 40% 96%;
+    /* Electric blue secondary accent (matches MBM logo) */
+    --accent: 199 95% 55%;
+    --accent-foreground: 222 47% 6%;
 
-    --muted: 222 30% 16%;
-    --muted-foreground: 215 20% 55%;
+    --secondary: 222 30% 12%;
+    --secondary-foreground: 0 0% 98%;
 
-    --accent: 260 60% 55%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 222 25% 14%;
+    --muted-foreground: 220 10% 65%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 199 89% 48%;
+    --border: 222 25% 16%;
+    --input: 222 25% 14%;
+    --ring: 75 85% 63%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --neon-blue: 199 89% 48%;
-    --neon-purple: 260 60% 55%;
-    --neon-cyan: 180 80% 50%;
-    --glass: 222 47% 12%;
-    --glass-border: 222 30% 22%;
+    --neon-lime: 75 85% 63%;
+    --neon-blue: 199 95% 55%;
+    --neon-purple: 260 70% 60%;
+    --glass: 222 40% 10%;
+    --glass-border: 222 25% 18%;
 
     --sidebar-background: 222 47% 8%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 199 89% 48%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 75 85% 63%;
     --sidebar-primary-foreground: 222 47% 6%;
     --sidebar-accent: 222 47% 14%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 199 89% 48%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 222 25% 18%;
+    --sidebar-ring: 75 85% 63%;
   }
 }
 
@@ -58,53 +60,74 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
+    font-feature-settings: "ss01", "cv11";
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Manrope', 'Space Grotesk', sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-glass/50 backdrop-blur-xl border border-glass-border rounded-2xl;
+    @apply bg-glass/60 backdrop-blur-xl border border-glass-border rounded-2xl;
   }
 
   .glass-card-hover {
-    @apply glass-card transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.3)];
+    @apply glass-card transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.3)];
   }
 
-  .neon-glow {
-    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.4),
-                0 0 60px -10px hsl(var(--primary) / 0.2);
+  .lime-glow {
+    box-shadow: 0 0 30px -8px hsl(var(--primary) / 0.55),
+                0 0 80px -20px hsl(var(--primary) / 0.3);
   }
 
-  .neon-text {
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.5),
-                 0 0 40px hsl(var(--primary) / 0.2);
+  .blue-glow {
+    box-shadow: 0 0 30px -8px hsl(var(--accent) / 0.5);
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(120deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
   }
 
-  .gradient-border {
-    position: relative;
+  .text-gradient-lime {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(120deg, hsl(var(--primary)) 0%, hsl(75 90% 75%) 100%);
   }
 
-  .gradient-border::before {
+  /* Seonex-style pill button: text + circular arrow */
+  .pill-btn {
+    @apply inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full font-bold uppercase tracking-wider text-sm transition-all duration-300;
+  }
+
+  .pill-btn-primary {
+    @apply pill-btn bg-primary text-primary-foreground hover:bg-primary/90 hover:gap-3;
+  }
+
+  .pill-btn-outline {
+    @apply pill-btn border border-border text-foreground hover:border-primary hover:text-primary;
+  }
+
+  .pill-btn-arrow {
+    @apply w-9 h-9 rounded-full bg-background/15 flex items-center justify-center shrink-0;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.25em];
+  }
+
+  .eyebrow::before {
     content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+    @apply w-6 h-px bg-primary;
   }
 
   .floating {
@@ -119,10 +142,40 @@
     animation: float 8s ease-in-out 1s infinite;
   }
 
+  /* Sticky badge - Seonex style */
   .sticky-badge {
-    @apply fixed bottom-6 right-6 z-50 glass-card px-4 py-2 text-sm font-medium;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--accent) / 0.15));
-    border: 1px solid hsl(var(--primary) / 0.3);
+    @apply fixed bottom-5 right-5 z-50 px-4 py-2 rounded-full font-semibold text-xs sm:text-sm shadow-2xl;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 10px 40px -10px hsl(var(--primary) / 0.6);
+  }
+
+  /* Big colorful hero gradient blob like Seonex side */
+  .hero-blob {
+    background: conic-gradient(
+      from 90deg at 50% 50%,
+      hsl(var(--accent) / 0.6),
+      hsl(var(--primary) / 0.5),
+      hsl(260 70% 60% / 0.5),
+      hsl(var(--accent) / 0.6)
+    );
+    filter: blur(60px);
+  }
+
+  /* Marquee */
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: 3rem;
+  }
+
+  .marquee-track {
+    flex-shrink: 0;
+    display: flex;
+    gap: 3rem;
+    animation: marquee 30s linear infinite;
+    min-width: 100%;
   }
 }
 
@@ -134,83 +187,26 @@
   .preserve-3d {
     transform-style: preserve-3d;
   }
+
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(-5px) rotate(-1deg); }
+  33% { transform: translateY(-12px) rotate(0.5deg); }
+  66% { transform: translateY(-6px) rotate(-0.5deg); }
 }
 
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+  50% { opacity: 0.85; }
 }
 
-@keyframes grid-move {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50px); }
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.3);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.5);
-}
-
-
-
-/* Add these to your existing index.css file */
-
-/* Hide scrollbar but keep functionality */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Smooth horizontal scroll snap */
-.snap-x {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.snap-center {
-  scroll-snap-align: center;
-}
-
-/* Enhanced card styles for better depth */
-.glass-card-hover {
-  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  will-change: transform;
-}
-
-.glass-card-hover:hover {
-  border-color: hsl(var(--primary) / 0.5);
-  box-shadow: 0 0 40px -8px hsl(var(--primary) / 0.4);
-}
-
-/* Improved gradient text animation */
-.gradient-text {
-  background-size: 200% auto;
-  animation: shimmer 3s ease infinite;
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 
 @keyframes shimmer {
@@ -219,12 +215,33 @@ html {
   100% { background-position: 0% 50%; }
 }
 
-/* Smooth pulse animation for heading glow */
-@keyframes pulse {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
+@keyframes blob-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.animate-pulse {
-  animation: pulse 3s ease-in-out infinite;
+.gradient-text {
+  background-size: 200% auto;
+  animation: shimmer 5s ease infinite;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.6);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
