@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["'Space Grotesk'", "sans-serif"],
+        heading: ["'Manrope'", "'Space Grotesk'", "sans-serif"],
         body: ["'Inter'", "sans-serif"],
       },
       colors: {
@@ -56,9 +56,9 @@ export default {
           border: "hsl(var(--glass-border))",
         },
         neon: {
+          lime: "hsl(var(--neon-lime))",
           blue: "hsl(var(--neon-blue))",
           purple: "hsl(var(--neon-purple))",
-          cyan: "hsl(var(--neon-cyan))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
