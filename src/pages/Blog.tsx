@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StickyBadge from "@/components/StickyBadge";
