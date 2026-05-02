@@ -1,25 +1,46 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { label: "Home", href: "#" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "MVP Lab", href: "/#mvp" },
+  { label: "Portfolio", href: "/#portfolio" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const renderLink = (link: { label: string; href: string }, onClick?: () => void) => {
+    const isHash = link.href.startsWith("/#");
+    const className =
+      "px-4 py-2 rounded-full text-sm font-semibold text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300";
+    if (isHash && pathname === "/") {
+      return (
+        <a key={link.href} href={link.href.slice(1)} onClick={onClick} className={className}>
+          {link.label}
+        </a>
+      );
+    }
+    return (
+      <Link key={link.href} to={link.href.startsWith("/#") ? "/" : link.href} onClick={onClick} className={className}>
+        {link.label}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -28,36 +49,28 @@ export default function Navbar() {
           scrolled ? "py-2" : "py-3 sm:py-4"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6">
+        <div className="container mx-auto px-3 sm:px-6">
           <div
-            className={`flex items-center justify-between gap-4 px-4 sm:px-5 py-2.5 rounded-full transition-all duration-500 ${
+            className={`flex items-center justify-between gap-3 px-3 sm:px-5 py-2.5 rounded-full transition-all duration-500 ${
               scrolled
-                ? "bg-background/80 backdrop-blur-xl border border-border shadow-lg"
+                ? "bg-background/85 backdrop-blur-xl border border-border shadow-lg"
                 : "bg-background/40 backdrop-blur-md border border-border/40"
             }`}
           >
-            <a href="#" className="flex items-center gap-2 shrink-0">
-              <img src={logo} alt="MightBeMedia" className="h-9 sm:h-11" />
-            </a>
+            <Link to="/" className="flex items-center gap-2 shrink-0">
+              <img src={logo} alt="MightBeMedia" className="h-8 sm:h-10" />
+            </Link>
 
             <div className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-2 rounded-full text-sm font-semibold text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all duration-300"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((l) => renderLink(l))}
             </div>
 
             <div className="flex items-center gap-2">
               <a
-                href="#contact"
+                href={pathname === "/" ? "#contact" : "/#contact"}
                 className="hidden sm:inline-flex pill-btn-primary text-xs lime-glow"
               >
-                Get in Touch
+                Get Free Demo
                 <span className="pill-btn-arrow bg-primary-foreground/15">
                   <ArrowUpRight className="w-4 h-4" />
                 </span>
@@ -75,39 +88,32 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
       <div
         className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
+        <div className="absolute inset-0 bg-background/90 backdrop-blur-xl" onClick={() => setMobileOpen(false)} />
         <div
-          className="absolute inset-0 bg-background/90 backdrop-blur-xl"
-          onClick={() => setMobileOpen(false)}
-        />
-        <div
-          className={`absolute top-20 left-4 right-4 glass-card p-6 transition-all duration-500 ${
+          className={`absolute top-20 left-3 right-3 glass-card p-5 transition-all duration-500 ${
             mobileOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
           }`}
         >
-          {navLinks.map((link, i) => (
-            <a
+          {navLinks.map((link) => (
+            <div
               key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between py-3.5 border-b border-border/50 last:border-0 text-foreground hover:text-primary transition-colors"
-              style={{ transitionDelay: `${i * 30}ms` }}
+              className="flex items-center justify-between py-3 border-b border-border/50 last:border-0"
             >
-              <span className="font-semibold">{link.label}</span>
+              {renderLink(link, () => setMobileOpen(false))}
               <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
-            </a>
+            </div>
           ))}
           <a
-            href="#contact"
+            href={pathname === "/" ? "#contact" : "/#contact"}
             onClick={() => setMobileOpen(false)}
             className="mt-5 pill-btn-primary w-full justify-between text-xs lime-glow"
           >
-            Get in Touch
+            Get Free Demo
             <span className="pill-btn-arrow bg-primary-foreground/15">
               <ArrowUpRight className="w-4 h-4" />
             </span>
