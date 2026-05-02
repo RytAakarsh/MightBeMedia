@@ -1,12 +1,14 @@
 import logo from "@/assets/logo.png";
 import { Mail, Phone, ArrowUp, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const footerLinks = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "MVP Lab", href: "/#mvp" },
+  { label: "Portfolio", href: "/#portfolio" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Footer() {
