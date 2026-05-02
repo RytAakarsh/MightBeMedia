@@ -71,12 +71,11 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.map((l) => (
                 <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {l.label}
-                  </a>
+                  {l.href.startsWith("/#") ? (
+                    <a href={l.href.slice(1)} className="text-sm text-muted-foreground hover:text-primary transition-colors">{l.label}</a>
+                  ) : (
+                    <Link to={l.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{l.label}</Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -88,7 +87,7 @@ export default function Footer() {
               Services
             </p>
             <ul className="space-y-3">
-              {["Website Development", "App Development", "Software Development", "Social Media Growth"].map(
+              {["Website Development", "SEO Services", "MVP for Startups", "App Development", "Software Development", "Social Media Growth"].map(
                 (s) => (
                   <li key={s}>
                     <a
