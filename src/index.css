@@ -130,6 +130,23 @@
     @apply w-6 h-px bg-primary;
   }
 
+  .eyebrow.justify-center {
+    justify-content: center;
+  }
+
+  /* Portfolio marquee carousel */
+  .portfolio-marquee-track {
+    width: max-content;
+    animation: portfolio-marquee 50s linear infinite;
+  }
+  .portfolio-marquee-wrapper:hover .portfolio-marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes portfolio-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
   .floating {
     animation: float 6s ease-in-out infinite;
   }
