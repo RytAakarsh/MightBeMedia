@@ -8,6 +8,7 @@ const international = [
 ];
 
 const national = [
+  { name: "Diksha Hair Regrowth", url: "https://dikshahair.vercel.app/", tag: "Healthcare Clinic", preview: "/diksha.png" },
   { name: "Modulus Classes", url: "https://www.modulusclasses.in/", tag: "Course Funnel", preview: "/modulus.png" },
   { name: "SEM Fitness", url: "https://sem-fitness.vercel.app/", tag: "Brand Website", preview: "/sem.png" },
   { name: "She & Soul", url: "https://www.sheandsoul.co.in/", tag: "Women Healthcare", preview: "/she&soul.png" },
@@ -17,7 +18,7 @@ const national = [
 
 type Project = typeof international[0];
 
-function PortfolioCard({ project, large = false }: { project: Project; large?: boolean }) {
+function PortfolioCard({ project, large = false, compact = false }: { project: Project; large?: boolean; compact?: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -32,6 +33,8 @@ function PortfolioCard({ project, large = false }: { project: Project; large?: b
     if (cardRef.current) cardRef.current.style.transform = "perspective(1200px) rotateY(0) rotateX(0) translateY(0)";
   };
 
+  const heightClass = large ? "h-64 sm:h-80 lg:h-96" : compact ? "h-48 sm:h-56" : "h-56 sm:h-64";
+
   return (
     <div
       ref={cardRef}
@@ -40,25 +43,20 @@ function PortfolioCard({ project, large = false }: { project: Project; large?: b
       className="group relative w-full rounded-3xl overflow-hidden bg-card border border-border hover:border-primary/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl"
     >
       <a href={project.url} target="_blank" rel="noopener noreferrer" className="block">
-        <div className={`relative ${large ? "h-64 sm:h-80 lg:h-96" : "h-56 sm:h-64"} overflow-hidden bg-gradient-to-br from-secondary to-background`}>
+        <div className={`relative ${heightClass} overflow-hidden bg-gradient-to-br from-secondary to-background`}>
           <img
             src={project.preview}
-            alt={`${project.name} website preview`}
+            alt={`${project.name} website preview by MightBeMedia`}
             className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
 
-          {/* Hover overlay */}
           <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center justify-center backdrop-blur-sm">
             <span className="pill-btn-primary bg-primary-foreground text-primary hover:bg-primary-foreground transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
               View Live
-              <span className="pill-btn-arrow bg-primary/20">
-                <ExternalLink className="w-4 h-4" />
-              </span>
+              <span className="pill-btn-arrow bg-primary/20"><ExternalLink className="w-4 h-4" /></span>
             </span>
           </div>
         </div>
@@ -68,7 +66,7 @@ function PortfolioCard({ project, large = false }: { project: Project; large?: b
             <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary mb-2">
               {project.tag}
             </span>
-            <h3 className="text-lg sm:text-xl font-heading font-bold truncate group-hover:text-primary transition-colors">
+            <h3 className="text-base sm:text-lg lg:text-xl font-heading font-bold truncate group-hover:text-primary transition-colors">
               {project.name}
             </h3>
             <p className="text-xs text-muted-foreground mt-1 truncate">
@@ -86,6 +84,9 @@ function PortfolioCard({ project, large = false }: { project: Project; large?: b
 
 export default function PortfolioSection() {
   const { ref, isVisible } = useScrollAnimation();
+
+  // duplicate the national list for seamless marquee loop
+  const nationalLoop = [...national, ...national];
 
   return (
     <section id="portfolio" className="py-20 sm:py-28 lg:py-32 relative overflow-hidden">
@@ -127,7 +128,7 @@ export default function PortfolioSection() {
           </div>
         </div>
 
-        {/* National */}
+        {/* National - Marquee carousel */}
         <div>
           <div className="flex items-center gap-3 mb-6 sm:mb-8">
             <span className="text-lg">🇮🇳</span>
@@ -135,11 +136,26 @@ export default function PortfolioSection() {
               National Clients
             </h3>
             <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent" />
+            <span className="text-xs text-muted-foreground hidden sm:inline">Auto-scrolling · hover to pause</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {national.map((p) => (
-              <PortfolioCard key={p.name} project={p} />
-            ))}
+
+          <div className="relative -mx-4 sm:-mx-6 portfolio-marquee-wrapper">
+            {/* edge fades */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-r from-background to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-24 z-10 bg-gradient-to-l from-background to-transparent" />
+
+            <div className="overflow-hidden px-4 sm:px-6">
+              <div className="portfolio-marquee-track flex gap-5 sm:gap-6 py-3">
+                {nationalLoop.map((p, i) => (
+                  <div
+                    key={`${p.name}-${i}`}
+                    className="shrink-0 w-[80vw] sm:w-[360px] lg:w-[380px]"
+                  >
+                    <PortfolioCard project={p} compact />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
