@@ -60,6 +60,11 @@
     @apply border-border;
   }
 
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -68,6 +73,10 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     font-feature-settings: "ss01", "cv11";
+  }
+
+  section {
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
