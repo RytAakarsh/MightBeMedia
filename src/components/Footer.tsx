@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.png";
+import logo from "@/assets/MBM_Logo.png";
 import { Mail, Phone, ArrowUp, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -16,10 +16,10 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-border pt-16 sm:pt-20 pb-8">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0  h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[140px]" />
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className="container  mx-auto px-4 sm:px-6 relative z-10">
         {/* Big CTA strip */}
         <div className="mb-14 sm:mb-20 text-center">
           <h3 className="font-heading font-bold text-3xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-balance max-w-3xl mx-auto mb-6">
