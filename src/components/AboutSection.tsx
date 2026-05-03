@@ -18,8 +18,8 @@ export default function AboutSection() {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="about" className="relative py-20 sm:py-28 lg:py-32 overflow-hidden">
-      <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[140px]" />
+    <section id="about" className="surface-light relative py-20 sm:py-28 lg:py-32 overflow-hidden">
+      <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[140px]" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div
