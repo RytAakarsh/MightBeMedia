@@ -86,6 +86,41 @@
 }
 
 @layer components {
+  /* Light surface — Seonex-style bright section. Overrides tokens locally. */
+  .surface-light {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 8%;
+    --secondary: 220 16% 95%;
+    --secondary-foreground: 222 47% 8%;
+    --muted: 220 16% 94%;
+    --muted-foreground: 222 15% 38%;
+    --border: 220 14% 88%;
+    --input: 220 14% 90%;
+    --glass: 0 0% 100%;
+    --glass-border: 220 14% 88%;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  .surface-cream {
+    --background: 60 30% 96%;
+    --foreground: 222 47% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 8%;
+    --secondary: 60 20% 92%;
+    --muted: 60 20% 92%;
+    --muted-foreground: 222 15% 38%;
+    --border: 60 14% 86%;
+    --glass: 0 0% 100%;
+    --glass-border: 60 14% 86%;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
   .glass-card {
     @apply bg-glass/60 backdrop-blur-xl border border-glass-border rounded-2xl;
   }
