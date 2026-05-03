@@ -89,9 +89,9 @@ export default function PortfolioSection() {
   const nationalLoop = [...national, ...national];
 
   return (
-    <section id="portfolio" className="py-20 sm:py-28 lg:py-32 relative overflow-hidden">
-      <div className="absolute top-1/3 -left-48 w-96 h-96 bg-primary/5 rounded-full blur-[140px]" />
-      <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-accent/5 rounded-full blur-[140px]" />
+    <section id="portfolio" className="surface-cream py-20 sm:py-28 lg:py-32 relative overflow-hidden">
+      <div className="absolute top-1/3 -left-48 w-96 h-96 bg-primary/15 rounded-full blur-[140px]" />
+      <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-accent/15 rounded-full blur-[140px]" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div
