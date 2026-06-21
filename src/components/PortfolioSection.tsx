@@ -8,7 +8,10 @@ const international = [
 ];
 
 const national = [
-  { name: "Diksha Hair Regrowth", url: "https://dikshahair.vercel.app/", tag: "Healthcare Clinic", preview: "/diksha.png" },
+  { name: "Viva Skin Care",
+    tag: "Skin & Hair Clinic",
+    preview: "/viva.png",
+    url: "https://vivaskincare.in" },
   { name: "Modulus Classes", url: "https://www.modulusclasses.in/", tag: "Course Funnel", preview: "/modulus.png" },
   { name: "SEM Fitness", url: "https://sem-fitness.vercel.app/", tag: "Brand Website", preview: "/sem.png" },
   { name: "She & Soul", url: "https://www.sheandsoul.co.in/", tag: "Women Healthcare", preview: "/she&soul.png" },
