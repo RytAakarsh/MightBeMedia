@@ -314,3 +314,15 @@
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+
+iframe {
+  display: block;
+  max-width: 100%;
+  border: 0;
+}
+
+.portfolio-marquee-track {
+  will-change: transform;
+}
