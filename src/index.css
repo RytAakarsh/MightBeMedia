@@ -355,3 +355,49 @@ body {
 .portfolio-marquee-track {
   animation: none !important;
 }
+
+
+
+
+
+
+
+
+/* iOS SAFE CAROUSEL - No complex transforms */
+.snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* iOS Performance Fixes */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Prevent black screen on iOS */
+.surface-cream {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+img {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
