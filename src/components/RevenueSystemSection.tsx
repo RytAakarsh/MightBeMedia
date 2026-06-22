@@ -155,7 +155,6 @@
 //   );
 // }
 
-
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -191,6 +190,9 @@ const clinics = [
     url: "https://rootscarehairs.vercel.app/",
   },
 ];
+
+// Duplicate for infinite scroll effect
+const clinicLoop = [...clinics, ...clinics, ...clinics];
 
 function ClinicCard({ clinic }: any) {
   return (
@@ -250,84 +252,109 @@ function ClinicCard({ clinic }: any) {
 
 export default function RevenueSystemSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const animationRef = useRef<number | null>(null);
+  const speedRef = useRef(0.8); // pixels per frame
 
-  // Auto-scroll using native scroll with setInterval (lighter on iOS)
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
 
-    const autoScroll = () => {
-      if (!isPaused && container) {
-        const cardWidth = container.querySelector('.shrink-0')?.clientWidth || 360;
-        const gap = 24;
-        const totalCardWidth = cardWidth + gap;
-        
-        // Get current scroll position
-        const currentScroll = container.scrollLeft;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        
-        // Calculate next position
-        let nextScroll = currentScroll + totalCardWidth;
-        
-        // Reset to start if at end
-        if (nextScroll >= maxScroll) {
-          nextScroll = 0;
+    let lastTimestamp = 0;
+    let scrollStep = 0;
+
+    const smoothScroll = (timestamp: number) => {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      
+      // Throttle to ~60fps
+      const delta = timestamp - lastTimestamp;
+      if (delta >= 16) {
+        lastTimestamp = timestamp;
+
+        // Only auto-scroll if not hovered, not dragging, and container has content
+        if (!isHovered && !isDragging && container.scrollWidth > container.clientWidth) {
+          const maxScroll = container.scrollWidth - container.clientWidth;
+          
+          // Move by speed
+          scrollStep += speedRef.current;
+          
+          if (scrollStep >= 1) {
+            const steps = Math.floor(scrollStep);
+            scrollStep -= steps;
+            
+            let newScrollLeft = container.scrollLeft + steps;
+            
+            // Reset to beginning when reaching the end (for infinite effect)
+            if (newScrollLeft >= maxScroll) {
+              // Reset to middle of the loop for seamless infinite effect
+              const middlePosition = maxScroll / 2;
+              container.scrollLeft = middlePosition;
+              newScrollLeft = middlePosition + steps;
+            }
+            
+            container.scrollLeft = newScrollLeft;
+          }
         }
-        
-        // Smooth scroll to next position
-        container.scrollTo({
-          left: nextScroll,
-          behavior: 'smooth'
-        });
-        
-        // Update current index for dots
-        const newIndex = Math.round(nextScroll / totalCardWidth);
-        setCurrentIndex(newIndex % clinics.length);
       }
+      
+      animationRef.current = requestAnimationFrame(smoothScroll);
     };
 
-    // Start auto-scroll timer
-    timerRef.current = setInterval(autoScroll, 3000);
+    animationRef.current = requestAnimationFrame(smoothScroll);
 
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPaused]);
+  }, [isHovered, isDragging]);
 
-  // Handle manual scroll to update dots
-  const handleScroll = () => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const cardWidth = container.querySelector('.shrink-0')?.clientWidth || 360;
-    const gap = 24;
-    const totalCardWidth = cardWidth + gap;
-    
-    const scrollPos = container.scrollLeft;
-    const index = Math.round(scrollPos / totalCardWidth);
-    setCurrentIndex(index % clinics.length);
+  // Handle mouse drag for desktop
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
   };
 
-  // Go to specific slide
-  const goToSlide = (index: number) => {
-    const container = scrollRef.current;
-    if (!container) return;
-    
-    const cardWidth = container.querySelector('.shrink-0')?.clientWidth || 360;
-    const gap = 24;
-    const totalCardWidth = cardWidth + gap;
-    
-    container.scrollTo({
-      left: index * totalCardWidth,
-      behavior: 'smooth'
-    });
-    
-    setCurrentIndex(index);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch events for mobile
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    setIsDragging(true);
+    setStartX(touch.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const x = touch.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -351,30 +378,31 @@ export default function RevenueSystemSection() {
           </p>
         </div>
 
-        {/* SIMPLE NATIVE SCROLL CAROUSEL - iOS SAFE */}
+        {/* AUTO-SCROLLING SMOOTH CAROUSEL */}
         <div
           ref={scrollRef}
-          className="overflow-x-auto no-scrollbar pb-4 snap-x snap-mandatory"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => {
-            // Resume after a short delay
-            setTimeout(() => setIsPaused(false), 3000);
+          className="overflow-x-auto no-scrollbar pb-4 cursor-grab active:cursor-grabbing"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            handleMouseUpOrLeave();
           }}
-          onScroll={handleScroll}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           style={{
+            scrollBehavior: isDragging ? 'auto' : 'smooth',
             WebkitOverflowScrolling: 'touch',
-            scrollSnapType: 'x mandatory',
-            scrollBehavior: 'smooth',
           }}
         >
           <div className="flex gap-6 w-max px-1">
-            {/* Render 3 copies for infinite feel */}
-            {[...clinics, ...clinics, ...clinics].map((clinic, index) => (
+            {clinicLoop.map((clinic, index) => (
               <div
                 key={`${clinic.name}-${index}`}
-                className="w-[85vw] sm:w-[360px] lg:w-[380px] shrink-0 snap-start"
+                className="w-[85vw] sm:w-[360px] lg:w-[380px] shrink-0"
               >
                 <ClinicCard clinic={clinic} />
               </div>
@@ -387,13 +415,19 @@ export default function RevenueSystemSection() {
           {clinics.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                currentIndex === index 
-                  ? 'bg-primary w-6' 
-                  : 'bg-primary/30 hover:bg-primary/60'
-              }`}
+              className="w-2 h-2 rounded-full bg-primary/30 hover:bg-primary/60 transition-all duration-300"
               aria-label={`Go to slide ${index + 1}`}
-              onClick={() => goToSlide(index)}
+              onClick={() => {
+                if (scrollRef.current) {
+                  const cardWidth = scrollRef.current.querySelector('.shrink-0')?.clientWidth || 360;
+                  const gap = 24; // gap-6 = 24px
+                  const scrollAmount = (cardWidth + gap) * index;
+                  scrollRef.current.scrollTo({
+                    left: scrollAmount,
+                    behavior: 'smooth',
+                  });
+                }
+              }}
             />
           ))}
         </div>

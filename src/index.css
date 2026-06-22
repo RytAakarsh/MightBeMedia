@@ -361,43 +361,31 @@ body {
 
 
 
-
-
-/* iOS SAFE CAROUSEL - No complex transforms */
-.snap-x {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+/* iOS Safari optimizations for smooth scrolling */
+.cursor-grab {
+  cursor: grab;
 }
 
-.snap-start {
-  scroll-snap-align: start;
+.cursor-grabbing {
+  cursor: grabbing;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Prevent text selection while dragging */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* iOS Performance Fixes */
+/* Smooth scrolling with hardware acceleration */
 .overflow-x-auto {
   -webkit-overflow-scrolling: touch;
-  overflow-x: auto;
-  overflow-y: hidden;
+  scroll-behavior: smooth;
 }
 
-/* Prevent black screen on iOS */
-.surface-cream {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-img {
+/* Ensure images don't cause rendering issues */
+.overflow-x-auto img {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
