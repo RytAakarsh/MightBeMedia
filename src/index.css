@@ -359,33 +359,3 @@ body {
 
 
 
-
-
-/* iOS Safari optimizations for smooth scrolling */
-.cursor-grab {
-  cursor: grab;
-}
-
-.cursor-grabbing {
-  cursor: grabbing;
-}
-
-/* Prevent text selection while dragging */
-.no-select {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Smooth scrolling with hardware acceleration */
-.overflow-x-auto {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-/* Ensure images don't cause rendering issues */
-.overflow-x-auto img {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform;
-}
