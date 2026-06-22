@@ -58,7 +58,6 @@
 //   );
 // }
 
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RevenueSystemSection from "@/components/RevenueSystemSection";
@@ -97,7 +96,7 @@ export default function RevenueSystem() {
                 style={{ paddingTop: "56.25%" }}
               >
                 <iframe
-                  src="https://www.youtube.com/embed/1ZfypNw05NI"
+                  src="https://www.youtube.com/embed/1ZfypNw05NI?rel=0&playsinline=1"
                   title="MightBeMedia Revenue System"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -106,8 +105,6 @@ export default function RevenueSystem() {
               </div>
             </div>
           </div>
-
-         
         </div>
       </section>
 

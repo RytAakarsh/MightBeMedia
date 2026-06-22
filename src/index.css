@@ -326,3 +326,32 @@ iframe {
 .portfolio-marquee-track {
   will-change: transform;
 }
+
+
+/* iOS Safari fixes */
+iframe,
+img,
+video {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Remove animation entirely for this page */
+.portfolio-marquee-track {
+  animation: none !important;
+}

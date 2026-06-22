@@ -156,8 +156,8 @@
 // }
 
 
-
 import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const clinics = [
   {
@@ -192,7 +192,8 @@ const clinics = [
   },
 ];
 
-const clinicLoop = [...clinics, ...clinics];
+// Duplicate for infinite scroll effect
+const clinicLoop = [...clinics, ...clinics, ...clinics];
 
 function ClinicCard({ clinic }: any) {
   return (
@@ -251,6 +252,112 @@ function ClinicCard({ clinic }: any) {
 }
 
 export default function RevenueSystemSection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const animationRef = useRef<number | null>(null);
+  const speedRef = useRef(0.8); // pixels per frame
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let lastTimestamp = 0;
+    let scrollStep = 0;
+
+    const smoothScroll = (timestamp: number) => {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      
+      // Throttle to ~60fps
+      const delta = timestamp - lastTimestamp;
+      if (delta >= 16) {
+        lastTimestamp = timestamp;
+
+        // Only auto-scroll if not hovered, not dragging, and container has content
+        if (!isHovered && !isDragging && container.scrollWidth > container.clientWidth) {
+          const maxScroll = container.scrollWidth - container.clientWidth;
+          
+          // Move by speed
+          scrollStep += speedRef.current;
+          
+          if (scrollStep >= 1) {
+            const steps = Math.floor(scrollStep);
+            scrollStep -= steps;
+            
+            let newScrollLeft = container.scrollLeft + steps;
+            
+            // Reset to beginning when reaching the end (for infinite effect)
+            if (newScrollLeft >= maxScroll) {
+              // Reset to middle of the loop for seamless infinite effect
+              const middlePosition = maxScroll / 2;
+              container.scrollLeft = middlePosition;
+              newScrollLeft = middlePosition + steps;
+            }
+            
+            container.scrollLeft = newScrollLeft;
+          }
+        }
+      }
+      
+      animationRef.current = requestAnimationFrame(smoothScroll);
+    };
+
+    animationRef.current = requestAnimationFrame(smoothScroll);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isHovered, isDragging]);
+
+  // Handle mouse drag for desktop
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch events for mobile
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    setIsDragging(true);
+    setStartX(touch.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const x = touch.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
     <section className="surface-cream py-24 sm:py-32">
       <div className="container mx-auto px-4 sm:px-6">
@@ -272,26 +379,61 @@ export default function RevenueSystemSection() {
           </p>
         </div>
 
-        <div className="relative portfolio-marquee-wrapper">
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" />
-
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" />
-
-          <div className="overflow-hidden">
-            <div className="portfolio-marquee-track flex gap-6 py-4">
-              {clinicLoop.map((clinic, index) => (
-                <div
-                  key={`${clinic.name}-${index}`}
-                  className="w-[85vw] shrink-0 sm:w-[360px] lg:w-[380px]"
-                >
-                  <ClinicCard clinic={clinic} />
-                </div>
-              ))}
-            </div>
+        {/* AUTO-SCROLLING SMOOTH CAROUSEL */}
+        <div
+          ref={scrollRef}
+          className="overflow-x-auto no-scrollbar pb-4 cursor-grab active:cursor-grabbing"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            handleMouseUpOrLeave();
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            scrollBehavior: isDragging ? 'auto' : 'smooth',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <div className="flex gap-6 w-max px-1">
+            {clinicLoop.map((clinic, index) => (
+              <div
+                key={`${clinic.name}-${index}`}
+                className="w-[85vw] sm:w-[360px] lg:w-[380px] shrink-0"
+              >
+                <ClinicCard clinic={clinic} />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="mt-20 flex justify-center">
+        {/* Scroll indicator dots */}
+        <div className="flex justify-center gap-2 mt-8">
+          {clinics.map((_, index) => (
+            <button
+              key={index}
+              className="w-2 h-2 rounded-full bg-primary/30 hover:bg-primary/60 transition-all duration-300"
+              aria-label={`Go to slide ${index + 1}`}
+              onClick={() => {
+                if (scrollRef.current) {
+                  const cardWidth = scrollRef.current.querySelector('.shrink-0')?.clientWidth || 360;
+                  const gap = 24; // gap-6 = 24px
+                  const scrollAmount = (cardWidth + gap) * index;
+                  scrollRef.current.scrollTo({
+                    left: scrollAmount,
+                    behavior: 'smooth',
+                  });
+                }
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
           <a
             href="https://wa.me/919911207086?text=I%20want%20this%20Revenue%20System"
             target="_blank"
